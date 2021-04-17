@@ -1,0 +1,10 @@
+# Specify location of manifest files for each package manager
+
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    # Files stored in repository root
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
