@@ -8,7 +8,6 @@ fn main() -> std::io::Result<()> {
     let mut use_file = false;
     let mut tcp_endpoint = "".to_string();
     let mut file_name = "".to_string();
-    println!("arg.len={}", env::args().len());
 
     let mut skip = false;
     for i in 1..env::args().len() {
@@ -22,8 +21,6 @@ fn main() -> std::io::Result<()> {
         };
 
         if arg == "-f" {
-            println!("f");
-
             file_name = match env::args().nth(i + 1) {
                 Option::Some(val) => val,
                 Option::None => panic!("f is required"),
@@ -32,8 +29,6 @@ fn main() -> std::io::Result<()> {
             skip = true;
         }
         if arg == "-p" {
-            println!("P");
-
             tcp_endpoint = match env::args().nth(i + 1) {
                 Option::Some(val) => val,
                 Option::None => panic!("p is required"),
@@ -42,7 +37,6 @@ fn main() -> std::io::Result<()> {
             skip = true;
         }
         
-        println!("arg[{}] = {}", i, arg);
     }
 
     if !use_tcp && !use_file {
@@ -78,6 +72,6 @@ fn main() -> std::io::Result<()> {
     if found {
         Ok(())
     } else {
-        panic!("file didn't appear");
+        panic!("file nor listener didn't appear");
     }
 }
