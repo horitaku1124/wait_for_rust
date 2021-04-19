@@ -3,6 +3,44 @@ use std::path::Path;
 use std::{thread, time};
 
 fn main() -> std::io::Result<()> {
+    let mut useTcp = false;
+    let mut useFile = false;
+    println!("arg.len={}", env::args().len());
+
+    let mut skip = false;
+    for i in 1..env::args().len() {
+        if skip {
+            skip = false;
+            continue;
+        }
+        let arg = match env::args().nth(i) {
+            Option::Some(val) => val,
+            Option::None => "".to_owned(),
+        };
+
+        if arg == "-f" {
+            println!("f");
+
+            let file = match env::args().nth(i + 1) {
+                Option::Some(val) => val,
+                Option::None => panic!("f is required"),
+            };
+            useFile = true;
+            skip = true;
+        }
+        if arg == "-p" {
+            println!("P");
+
+            let host = match env::args().nth(i) {
+                Option::Some(val) => val,
+                Option::None => panic!("p is required"),
+            };
+            useTcp = true;
+            skip = true;
+        }
+        
+        println!("arg[{}] = {}", i, arg);
+    }
     let filename = env::args().nth(1).expect("file name required");
 
     let exists = Path::new(&filename).exists();
