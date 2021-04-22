@@ -10,6 +10,7 @@ fn main() -> std::io::Result<()> {
     let mut file_name = "".to_string();
 
     let mut skip = false;
+    let mut wait_time = 5;
     for i in 1..env::args().len() {
         if skip {
             skip = false;
@@ -36,6 +37,13 @@ fn main() -> std::io::Result<()> {
             use_tcp = true;
             skip = true;
         }
+        if arg == "-t" {
+            wait_time = match env::args().nth(i + 1) {
+                Option::Some(val) => val.parse::<i32>().unwrap(),
+                Option::None => panic!("t should be specified"),
+            };
+            skip = true;
+        }
         
     }
 
@@ -46,7 +54,7 @@ fn main() -> std::io::Result<()> {
 
     let mut found = false;
     if use_file {
-        for _i in  0..5{
+        for _i in  0..wait_time{
             if Path::new(&file_name).exists() {
                 found = true;
                 break;
@@ -58,7 +66,7 @@ fn main() -> std::io::Result<()> {
         }
     }
     if use_tcp {
-        for _i in  0..5{
+        for _i in  0..wait_time{
             if let Ok(_stream) = TcpStream::connect(&tcp_endpoint) {
                 found = true;
                 break;
